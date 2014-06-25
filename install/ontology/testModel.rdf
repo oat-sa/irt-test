@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<rdf:RDF
+	xml:base="http://www.tao.lu/Ontologies/TAOTest.rdf#"
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+	xmlns:test="http://www.tao.lu/Ontologies/TAOTest.rdf#"
+	xmlns:wf="http://www.tao.lu/middleware/wfEngine.rdf#"
+	xmlns:generis="http://www.tao.lu/Ontologies/generis.rdf#"
+>
+ 
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOTest.rdf#IrtTestContent">
+    <rdfs:subClassOf rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#TAOObject"/>
+    <rdfs:label xml:lang="en-US"><![CDATA[IRT Test Content]]></rdfs:label>
+	<rdfs:comment xml:lang="en-US"><![CDATA[The items within an IRT test]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOTest.rdf#IrtTestItems">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en-US"><![CDATA[Items]]></rdfs:label>
+    <rdfs:comment xml:lang="en-US"><![CDATA[items of the test]]></rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOTest.rdf#IrtTestContent"/>
+    <rdfs:range rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"/>
+    <generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOTest.rdf#FormalParamIrtTestDefinition">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters"/>
+    <rdfs:label xml:lang="en-US"><![CDATA[IRT test definition]]></rdfs:label>
+    <rdfs:comment xml:lang="en-US"><![CDATA[IRT test definition]]></rdfs:comment>
+    <wf:PropertyFormalParametersName><![CDATA[Test]]></wf:PropertyFormalParametersName>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOTest.rdf#FormalParamIrtTestCompilation">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters"/>
+    <rdfs:label xml:lang="en-US"><![CDATA[IRT test compilation]]></rdfs:label>
+    <rdfs:comment xml:lang="en-US"><![CDATA[IRT test compilation]]></rdfs:comment>
+    <wf:PropertyFormalParametersName><![CDATA[Compilation]]></wf:PropertyFormalParametersName>
+  </rdf:Description>
+  
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAODelivery.rdf#ServiceIrtTestRunner">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassDeliveryServices"/>
+    <rdfs:label xml:lang="en-US"><![CDATA[IRT test runner]]></rdfs:label>
+    <rdfs:comment xml:lang="en-US"><![CDATA[runs an IRT test]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/irtTest/TestRunner/index?Test=^Test&Compilation=^Compilation]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="http://www.tao.lu/Ontologies/TAOTest.rdf#FormalParamIrtTestDefinition"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="http://www.tao.lu/Ontologies/TAOTest.rdf#FormalParamIrtTestCompilation"/>
+  </rdf:Description>
+  
+</rdf:RDF>

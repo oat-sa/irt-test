@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    @sourceLanguage en-US
+    @targetLanguage en-US
+-->
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xml:base="http://www.tao.lu/Ontologies/TAOTest.rdf#">
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOTest.rdf#IrtTestContent">
+    <!--
+    @sourceLanguage en-US
+    @targetLanguage en-US
+    @source IRT Test Content
+    @subject http://www.tao.lu/Ontologies/TAOTest.rdf#IrtTestContent
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="en-US"><![CDATA[IRT Test Content]]></rdfs:label>
+    <!--
+    @sourceLanguage en-US
+    @targetLanguage en-US
+    @source The items within an IRT test
+    @subject http://www.tao.lu/Ontologies/TAOTest.rdf#IrtTestContent
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="en-US"><![CDATA[The items within an IRT test]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOTest.rdf#IrtTestItems">
+    <!--
+    @sourceLanguage en-US
+    @targetLanguage en-US
+    @source Items
+    @subject http://www.tao.lu/Ontologies/TAOTest.rdf#IrtTestItems
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="en-US"><![CDATA[Items]]></rdfs:label>
+    <!--
+    @sourceLanguage en-US
+    @targetLanguage en-US
+    @source items of the test
+    @subject http://www.tao.lu/Ontologies/TAOTest.rdf#IrtTestItems
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="en-US"><![CDATA[items of the test]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOTest.rdf#FormalParamIrtTestDefinition">
+    <!--
+    @sourceLanguage en-US
+    @targetLanguage en-US
+    @source IRT test definition
+    @subject http://www.tao.lu/Ontologies/TAOTest.rdf#FormalParamIrtTestDefinition
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="en-US"><![CDATA[IRT test definition]]></rdfs:label>
+    <!--
+    @sourceLanguage en-US
+    @targetLanguage en-US
+    @source IRT test definition
+    @subject http://www.tao.lu/Ontologies/TAOTest.rdf#FormalParamIrtTestDefinition
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="en-US"><![CDATA[IRT test definition]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOTest.rdf#FormalParamIrtTestCompilation">
+    <!--
+    @sourceLanguage en-US
+    @targetLanguage en-US
+    @source IRT test definition
+    @subject http://www.tao.lu/Ontologies/TAOTest.rdf#FormalParamIrtTestCompilation
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="en-US"><![CDATA[IRT test definition]]></rdfs:label>
+    <!--
+    @sourceLanguage en-US
+    @targetLanguage en-US
+    @source IRT test definition
+    @subject http://www.tao.lu/Ontologies/TAOTest.rdf#FormalParamIrtTestCompilation
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="en-US"><![CDATA[IRT test definition]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAODelivery.rdf#ServiceIrtTestRunner">
+    <!--
+    @sourceLanguage en-US
+    @targetLanguage en-US
+    @source IRT test runner
+    @subject http://www.tao.lu/Ontologies/TAODelivery.rdf#ServiceIrtTestRunner
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="en-US"><![CDATA[IRT test runner]]></rdfs:label>
+    <!--
+    @sourceLanguage en-US
+    @targetLanguage en-US
+    @source runs an IRT test
+    @subject http://www.tao.lu/Ontologies/TAODelivery.rdf#ServiceIrtTestRunner
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="en-US"><![CDATA[runs an IRT test]]></rdfs:comment>
+  </rdf:Description>
+</rdf:RDF>
