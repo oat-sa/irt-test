@@ -28,11 +28,17 @@ use oat\irtTest\model\routing\Plan;
 use oat\irtTest\model\routing\Route;
 
 /**
+ * The TestRunner is the controller dedicated to deliver an IRT Test
+ * to a given candidate.
+ * 
+ * The index action is used as a bootstrap, when the TestRunner is called as a service. On the
+ * other hand, the next action is called within an Ajax context to update the candidate's client
+ * when the next item has to be delivered.
  * 
  * @author Joel Bout <joel@taotesting.com>
+ * @author Jérôme Bogaerts <jerome@taotesting.com>
  */
-class TestRunner extends tao_actions_ServiceModule
-{
+class TestRunner extends tao_actions_ServiceModule {
     private $model = null;
     
     private $state = null;
@@ -42,7 +48,7 @@ class TestRunner extends tao_actions_ServiceModule
     protected function getTestModel() {
         if (is_null($this->model)) {
             $compiledTest = $this->getRequestParameter('Compilation');
-            $fileName = $this->getDirectory($compiledTest)->getPath().TestAssembler::ASSEMBLY_FILENAME;
+            $fileName = $this->getDirectory($compiledTest)->getPath() . TestAssembler::ASSEMBLY_FILENAME;
             $this->model = include $fileName;
         }
         return $this->model;

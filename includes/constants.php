@@ -21,10 +21,10 @@
 $todefine = array(
     // Ontology references.
     'INSTANCE_IRTTEST_TESTRUNNERSERVICE'        => 'http://www.tao.lu/Ontologies/TAODelivery.rdf#ServiceIrtTestRunner',
+
     'INSTANCE_FORMALPARAM_IRTTEST_DEFINITION'   => 'http://www.tao.lu/Ontologies/TAOTest.rdf#FormalParamIrtTestDefinition',
     'INSTANCE_FORMALPARAM_IRTTEST_COMPILATION'  => 'http://www.tao.lu/Ontologies/TAOTest.rdf#FormalParamIrtTestCompilation',
-    
+
     'CLASS_IRT_TEST_CONTENT'                    => 'http://www.tao.lu/Ontologies/TAOTest.rdf#IrtTestContent',
     'PROPERTY_IRT_TEST_CONTENT_ITEMS'           => 'http://www.tao.lu/Ontologies/TAOTest.rdf#IrtTestItems',
-    
 );
