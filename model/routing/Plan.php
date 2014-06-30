@@ -25,7 +25,11 @@ use oat\oatbox\PhpSerializable;
 /**
  * A Plan describes how a IRT Test will take place. An implementation
  * of Plan will take care of the Route instantiation logic, and set up
- * all additional logic a specific IRT test needs to be taken.
+ * all additional data describing specific IRT test needs.
+ * 
+ * An example of specific data would be the weights of each item
+ * to be executed. In other words, meta-data.
+ * 
  * 
  * @author Joel Bout <joel@taotesting.com>
  * @author Jérôme Bogaerts <jerome@taotesting.com>
@@ -34,7 +38,8 @@ use oat\oatbox\PhpSerializable;
 interface Plan extends PhpSerializable {
     /**
      * Instantiate a Route object to be used to determine
-     * which item is the next one in the item flow.
+     * which item is the next one in the item flow with respect
+     * to the Plan.
      * 
      * @return Route
      */
