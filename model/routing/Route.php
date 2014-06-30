@@ -28,13 +28,34 @@ namespace oat\irtTest\model\routing;
  * @author Jérôme Bogaerts <jerome@taotesting.com>
  * @see Plan The Plan interface.
  */
-interface Route {
+abstract class Route {
+    
     /**
      * Create a new Route object.
      * 
-     * @param Plan $plan The Plan the Route must consider.
+     * @param Plan $plan The Plan the Route must consider to deliver an approriate flow of items.
      */
-    public function __construct(Plan $plan);
+    public function __construct(Plan $plan) {
+        $this->setPlan($plan);
+    }
+    
+    /**
+     * Get the Plan to be respected by the Route.
+     * 
+     * @return Plan
+     */
+    protected function getPlan() {
+        return $this->plan;
+    }
+    
+    /**
+     * Set the Plan to be respected by the Route.
+     * 
+     * @param Plan $plan
+     */
+    protected function setPlan(Plan $plan) {
+        $this->plan = $plan;
+    }
     
     /**
      * Return the next item of the Route, or an empty string if the test is finished.
@@ -42,12 +63,12 @@ interface Route {
      * @param string $lastItemScore The score the candidate was granted against the last item he took. This parameter is optional if the candidate never took an item in this test before.
      * @return string $itemIdentifier The unique identifier of the next item to be delivered to the candidate.
      */
-    public function getNextItem($lastItemScore = '');
+    abstract public function getNextItem($lastItemScore = '');
     
     /**
      * Return the serialized state of the Route, as a string.
      * 
      * @return string
      */
-    public function getStateString();
+    abstract public function getStateString();
 }

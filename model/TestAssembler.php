@@ -55,8 +55,14 @@ class TestAssembler extends taoTests_models_classes_TestCompiler {
      * will be stored in the TestAssembler's private storage directory, with the name
      * TestAssembler::ASSEMBLY_FILENAME, as a PHP file that will be included at runtime.
      * 
+     * The compile() method will return a common_report_Report object  which describes how the compilation
+     * process took place (success, failure, warnings, ...) and contains a reference to a ServiceCall object.
+     * 
+     * The ServiceCall object can be retrieved through the common_report_Report::getData() method. It represents
+     * how the compiled test can be consumed as a service e.g. later on at delivery time.
+     * 
      * @return common_report_Report A Report containing information about the compilation process, and a tao_models_classes_service_ServicalCall object as its data attribute.
-     * @see tao_models_classes_service_ServiceCall
+     * @see tao_models_classes_service_ServiceCall TAO's Service Call class.
      */
     public function compile() {
 
@@ -99,12 +105,16 @@ class TestAssembler extends taoTests_models_classes_TestCompiler {
          
          if ($report->getType() == common_report_Report::TYPE_SUCCESS) {
              $service = new tao_models_classes_service_ServiceCall(new core_kernel_classes_Resource(INSTANCE_IRTTEST_TESTRUNNERSERVICE));
-             // item runners
+             
+
+             // Reference to the test definition resource in ontology (not usefull in our context but for others?)
+             // --> Needed for results transmission.
              $param = new tao_models_classes_service_ConstantParameter(
                  new core_kernel_classes_Resource(INSTANCE_FORMALPARAM_IRTTEST_DEFINITION),
                  $this->getResource()->getUri()
              );
-             // decision engine to use
+             
+             // Compilation folder where the assembly is stored.
              $param = new tao_models_classes_service_ConstantParameter(
                  new core_kernel_classes_Resource(INSTANCE_FORMALPARAM_IRTTEST_COMPILATION),
                  $private->getId()

@@ -29,7 +29,7 @@ use oat\oatbox\PhpSerializable;
  * 
  * @author Joel Bout <joel@taotesting.com>
  * @author Jérôme Bogaerts <jerome@taotesting.com>
- * @see Route The Route interface.
+ * @see Route The Route abstract class.
  */
 interface Plan extends PhpSerializable {
     /**
