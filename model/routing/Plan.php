@@ -47,4 +47,12 @@ interface Plan extends PhpSerializable {
      * @return Route
      */
     public function restoreRoute($stateString);
+    
+    /**
+     * Persist a Route object into a string representation.
+     * 
+     * @param Route $route
+     * @return string
+     */
+    public function persistRoute(Route $route);
 }

@@ -121,7 +121,7 @@ class TestRunner extends tao_actions_ServiceModule {
      * storage of TAO.
      */
     protected function updateState() {
-        $this->state['route'] = $this->route->getStateString();
+        $this->state['route'] = $this->getRoutingPlan()->persistRoute($this->getRoute());
         $this->setState(json_encode($this->state));
     }
     

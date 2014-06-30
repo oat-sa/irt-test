@@ -65,10 +65,4 @@ abstract class Route {
      */
     abstract public function getNextItem($lastItemScore = '');
     
-    /**
-     * Return the serialized state of the Route, as a string.
-     * 
-     * @return string
-     */
-    abstract public function getStateString();
 }
