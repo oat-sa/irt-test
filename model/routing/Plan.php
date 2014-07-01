@@ -35,7 +35,8 @@ use oat\oatbox\PhpSerializable;
  * @author Jérôme Bogaerts <jerome@taotesting.com>
  * @see Route The Route abstract class.
  */
-interface Plan extends PhpSerializable {
+interface Plan extends PhpSerializable 
+{
     /**
      * Instantiate a Route object to be used to determine
      * which item is the next one in the item flow with respect

@@ -40,7 +40,8 @@ use tao_models_classes_service_FileStorage;
  * @author Joel Bout <joel@taotesting.com>
  * @author Jérôme Bogaerts <jerome@taotesting.com>
  */
-abstract class TestModel implements taoTests_models_classes_TestModel {
+abstract class TestModel implements taoTests_models_classes_TestModel
+{
     
     /**
      * A reference on the common_ext_Extension object representing the
@@ -53,7 +54,8 @@ abstract class TestModel implements taoTests_models_classes_TestModel {
     /**
      * Create a new TestModel object dedicated to IRT Tests.
      */
-    public function __construct() {
+    public function __construct() 
+    {
         $this->ext = common_ext_ExtensionsManager::singleton()->getExtensionById('irtTest');
     }
     
@@ -63,7 +65,8 @@ abstract class TestModel implements taoTests_models_classes_TestModel {
      *
      * @param Resource $test The $test, as a Generis resource wich is the target of the label change.
      */
-    public function onChangeTestLabel(core_kernel_classes_Resource $test) {
+    public function onChangeTestLabel(core_kernel_classes_Resource $test)
+    {
         
     }
     
@@ -73,7 +76,8 @@ abstract class TestModel implements taoTests_models_classes_TestModel {
      * @param core_kernel_classes_Resource $test A Generis resource representing the IRT Test you want to bind items to.
      * @param array $items An array of core_kernel_classes_Resource object representing the items in the ontology.
      */
-    public function prepareContent(core_kernel_classes_Resource $test, $items = array()) {
+    public function prepareContent(core_kernel_classes_Resource $test, $items = array())
+    {
         TestContent::setItems($test, $items);
     }
     
@@ -82,7 +86,8 @@ abstract class TestModel implements taoTests_models_classes_TestModel {
      *
      * @param core_kernel_classes_Resource $test The Generis resource representing the test to be deleted.
      */
-    public function deleteContent(core_kernel_classes_Resource $test) {
+    public function deleteContent(core_kernel_classes_Resource $test)
+    {
         $content = TestContent::getContent($test);
         $content->delete();
         $test->removePropertyValue(new core_kernel_classes_Property(TEST_TESTCONTENT_PROP), $content);
@@ -94,7 +99,8 @@ abstract class TestModel implements taoTests_models_classes_TestModel {
      * @param core_kernel_classes_Resource $test A Generis resource representing the test you want to get the items.
      * @return array An array of core_kernel_classes_Resource objects representing the items related to $test.
      */
-    public function getItems(core_kernel_classes_Resource $test) {
+    public function getItems(core_kernel_classes_Resource $test)
+    {
         return TestContent::getItems($test);
     }
     
@@ -104,8 +110,8 @@ abstract class TestModel implements taoTests_models_classes_TestModel {
      * @param core_kernel_classes_Resource $test A Generis resource representing the test you want to render the authoring.
      * @return string The authoring tool rendering.
      */
-    public function getAuthoring(core_kernel_classes_Resource $test) {
-        
+    public function getAuthoring(core_kernel_classes_Resource $test) 
+    {
         $content = TestContent::getContent($test);
         $tree = tao_helpers_form_GenerisTreeForm::buildTree($content, new core_kernel_classes_Property(PROPERTY_IRT_TEST_CONTENT_ITEMS));
         return $tree->render();
@@ -118,7 +124,8 @@ abstract class TestModel implements taoTests_models_classes_TestModel {
      * @param core_kernel_classes_Resource $source
      * @param core_kernel_classes_Resource $destination
      */
-    public function cloneContent(core_kernel_classes_Resource $source, core_kernel_classes_Resource $destination) {
+    public function cloneContent(core_kernel_classes_Resource $source, core_kernel_classes_Resource $destination) 
+    {
         throw new common_exception_NotImplemented();
     }
     
@@ -127,7 +134,8 @@ abstract class TestModel implements taoTests_models_classes_TestModel {
      *
      * @return string
      */
-    public function getCompilerClass() {
+    public function getCompilerClass() 
+    {
         return 'oat\irtTest\model\TestAssembler';
     }
 
@@ -138,5 +146,5 @@ abstract class TestModel implements taoTests_models_classes_TestModel {
      * @param tao_models_classes_service_FileStorage $storage A Resource pointing on the compilation private directory.
      * @return Plan
      */
-    public abstract function createRoutingPlan(array $items, tao_models_classes_service_FileStorage $storage);
+    abstract public function createRoutingPlan(array $items, tao_models_classes_service_FileStorage $storage);
 }

@@ -28,14 +28,16 @@ namespace oat\irtTest\model\routing;
  * @author Jérôme Bogaerts <jerome@taotesting.com>
  * @see Plan The Plan interface.
  */
-abstract class Route {
+abstract class Route 
+{
     
     /**
      * Create a new Route object.
      * 
      * @param Plan $plan The Plan the Route must consider to deliver an approriate flow of items.
      */
-    public function __construct(Plan $plan) {
+    public function __construct(Plan $plan) 
+    {
         $this->setPlan($plan);
     }
     
@@ -44,7 +46,8 @@ abstract class Route {
      * 
      * @return Plan
      */
-    protected function getPlan() {
+    protected function getPlan() 
+    {
         return $this->plan;
     }
     
@@ -53,7 +56,8 @@ abstract class Route {
      * 
      * @param Plan $plan
      */
-    protected function setPlan(Plan $plan) {
+    protected function setPlan(Plan $plan) 
+    {
         $this->plan = $plan;
     }
     

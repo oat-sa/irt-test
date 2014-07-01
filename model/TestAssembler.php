@@ -40,8 +40,8 @@ use taoTests_models_classes_TestsService;
  * @author Jérôme Bogaerts <jerome@taotesting.com>
  * 
  */
-class TestAssembler extends taoTests_models_classes_TestCompiler {
-    
+class TestAssembler extends taoTests_models_classes_TestCompiler 
+{
     /**
      * The complete file name (name + extension) of the Assembly file
      * to be writtent/read to/from the compilation storage resource.
@@ -64,8 +64,8 @@ class TestAssembler extends taoTests_models_classes_TestCompiler {
      * @return common_report_Report A Report containing information about the compilation process, and a tao_models_classes_service_ServicalCall object as its data attribute.
      * @see tao_models_classes_service_ServiceCall TAO's Service Call class.
      */
-    public function compile() {
-
+    public function compile() 
+    {
         $testService = taoTests_models_classes_TestsService::singleton();
         $testModel = $testService->getTestModelImplementation($testService->getTestModel($this->getResource()));
         
@@ -74,16 +74,18 @@ class TestAssembler extends taoTests_models_classes_TestCompiler {
         //prepare the items
         $items = $testModel->getItems($this->getResource());
         $itemRunners = array();
+        
         foreach ($items as $item) {
+            
             $compilerClass = $this->getSubCompilerClass($item);
             $compiler = new $compilerClass($item, $this->getStorage());
             $subReport = $compiler->compile();
             $report->add($subReport);
+            
             if ($subReport->getType() != common_report_Report::TYPE_SUCCESS) {
                 $report->setType($subReport->getType());
                 break;
-            } 
-            else {
+            } else {
                 $itemRunners[$item->getUri()] = $subReport->getData()->serializeToString();
             }
         }

@@ -37,7 +37,8 @@ use oat\irtTest\model\routing\Route;
  * @author Joel Bout <joel@taotesting.com>
  * @author Jérôme Bogaerts <jerome@taotesting.com>
  */
-class TestRunner extends tao_actions_ServiceModule {
+class TestRunner extends tao_actions_ServiceModule 
+{
     
     /**
      * An associative array representing the Test Assembly.
@@ -66,7 +67,8 @@ class TestRunner extends tao_actions_ServiceModule {
      * 
      * @return array
      */
-    protected function getAssembly() {
+    protected function getAssembly() 
+    {
         if (is_null($this->assembly)) {
             $compiledTest = $this->getRequestParameter('Compilation');
             $fileName = $this->getDirectory($compiledTest)->getPath() . TestAssembler::ASSEMBLY_FILENAME;
@@ -80,7 +82,8 @@ class TestRunner extends tao_actions_ServiceModule {
      * 
      * @return Plan
      */
-    protected function getRoutingPlan() {
+    protected function getRoutingPlan() 
+    {
         $model = $this->getAssembly();
         return $model['routingPlan'];
     }
@@ -91,7 +94,8 @@ class TestRunner extends tao_actions_ServiceModule {
      * 
      * @return Route
      */
-    protected function getRoute() {
+    protected function getRoute() 
+    {
         if (is_null($this->route)) {
             $plan = $this->getRoutingPlan();
             $state = $this->getCachedState();
@@ -109,7 +113,8 @@ class TestRunner extends tao_actions_ServiceModule {
      * 
      * @return array
      */
-    protected function &getCachedState() {
+    protected function &getCachedState() 
+    {
         if (is_null($this->state)) {
             $this->state = json_decode($this->getState(), true);
         }
@@ -120,7 +125,8 @@ class TestRunner extends tao_actions_ServiceModule {
      * Update the state and commit the changes into the persistent state
      * storage of TAO.
      */
-    protected function updateState() {
+    protected function updateState() 
+    {
         $this->state['route'] = $this->getRoutingPlan()->persistRoute($this->getRoute());
         $this->setState(json_encode($this->state));
     }
@@ -129,16 +135,15 @@ class TestRunner extends tao_actions_ServiceModule {
      * The index action is the entry point for the candidate to take its test. It must not be
      * invoked through XHR calls.
      */
-    public function index() {
-        
+    public function index() 
+    {
         $state = $this->getCachedState();
         
         if (isset($state['current'])) {
             // We have a current item (candidate pressed F5 or comes back on
             // the test after a break).
             $itemUri = $state['current'];
-        } 
-        else {
+        } else {
             // No current item, let's retrieve the very first item
             // of the route.
             $itemUri = $this->getRoute()->getNextItem(null);
@@ -156,8 +161,8 @@ class TestRunner extends tao_actions_ServiceModule {
      * 
      * This method must always be called through XHR.
      */
-    public function next() {
-        
+    public function next() 
+    {
         $state = $this->getCachedState();
         
         // ajax call
@@ -172,12 +177,10 @@ class TestRunner extends tao_actions_ServiceModule {
         
         if (empty($itemUri)) {
             // @todo end test
-        } 
-        else {
+        } else {
             $state['current'] = $itemUri;
             $this->updateState();
             // @todo give test info required to render item
         }
     }
-    
 }
