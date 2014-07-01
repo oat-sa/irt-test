@@ -31,6 +31,7 @@ use core_kernel_classes_Class;
 use core_kernel_classes_Property;
 use tao_models_classes_service_FileStorage;
 use oat\irtTest\model\routing\Plan;
+use tao_models_classes_service_FileStorage;
 
 /**
  * An abstract implementation of a TAO Test Model, representing an IRT Test Model with a routing plan
@@ -134,7 +135,8 @@ abstract class TestModel implements taoTests_models_classes_TestModel {
      * Create a Plan object for a given set of $items.
      * 
      * @param array $items An array of core_kernel_classes_Resource objects representing the items involved in the Plan.
+     * @param tao_models_classes_service_FileStorage $storage A Resource pointing on the compilation private directory.
      * @return Plan
      */
-    public abstract function createRoutingPlan(array $items);
+    public abstract function createRoutingPlan(array $items, tao_models_classes_service_FileStorage $storage);
 }
