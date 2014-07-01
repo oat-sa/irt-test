@@ -20,26 +20,28 @@
 
 namespace oat\irtTest\model\routing;
 
+/**
+ * Contains the logic of obtaining the next item to be presented to the candidate, by respecting
+ * a given Plan. It also declares its state through the getStateString() method.
+ *
+ * @author Joel Bout <joel@taotesting.com>
+ * @author Jérôme Bogaerts <jerome@taotesting.com>
+ * @see Plan The Plan interface.
+ */
 interface Route
 {
-    /**
-     * Create a new route, or restore an existing route
-     * 
-     * @param Plan $plan
-     * @param string $state
-     */
-    public function __construct(Plan $plan, $state);
-    
     /**
      * Return the next item of the route, or none if done
      * 
      * @param string $lastItemScore
      * @return string $itemIdentifier
      */
-    public function getNextItem($lastItemScore);
+    public function getNextItem($lastItemScore = '');
     
     /**
-     * Return the serialized state of the route
+     * Return the serialized state of the Route, as a string.
+     *
+     * @return string
      */
     public function getStateString();
 }
