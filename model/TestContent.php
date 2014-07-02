@@ -24,37 +24,63 @@ namespace oat\irtTest\model;
 use core_kernel_classes_Class;
 use core_kernel_classes_Property;
 use core_kernel_classes_Resource;
+use common_Exception;
 
 /**
- * The Item Response Theorie test content
+ * A model helper class prodiving utility methods to deal
+ * with contents of IRT Tests.
  *
- * @access public
- * @author Joel Bout, <joel.bout@tudor.lu>
- * @package taoQtiTest
- 
+ * @author Joel Bout <joel@taotesting.com>
+ * @author Jérôme Bogaerts <jerome@taotesting.com>
+ * 
  */
-class TestContent
+class TestContent 
 {
-    public static function setItems($test, $items) {
+    /**
+     * Set the $items belonging to $test and bind them in the ontology.
+     * 
+     * @param core_kernel_classes_Resource $test A Generis resource describing the test you want to bind the $items to.
+     * @param array $items An array of core_kernel_classes_Resource objects representing the items to be bound to $test.
+     */
+    static public function setItems(core_kernel_classes_Resource $test, array $items) 
+    {
         $content = self::getContent($test);
         $content->editPropertyValues(new core_kernel_classes_Property(PROPERTY_IRT_TEST_CONTENT_ITEMS), $items); 
     }
     
-    public static function getItems($test) {
+    /**
+     * Get the items composing a given $test.
+     * 
+     * @param core_kernel_classes_Resource $test A Generis resource describing the test you want to get the items.
+     * @return array An array of core_kernel_classes_Resource objects representing the items bound to $test.
+     */
+    static public function getItems(core_kernel_classes_Resource $test) 
+    {
         $content = self::getContent($test);
         
         $items = array();
         $prop = new core_kernel_classes_Property(PROPERTY_IRT_TEST_CONTENT_ITEMS);
+        
         foreach ($content->getPropertyValues($prop) as $itemUri) {
             $items[] = new core_kernel_classes_Resource($itemUri);
         }
+        
         return $items;
     }
     
-    public static function getContent($test) {
+    /**
+     * Get the Generis resource representing the content of $test.
+     * 
+     * @param core_kernel_classes_Resource $test The test you want to get the content.
+     * @throws common_Exception If multiple content instances are bound to $test.
+     * @return core_kernel_classes_Resource The Generis resource representing the content $test.
+     */
+    static public function getContent(core_kernel_classes_Resource $test) 
+    {
         $props = $test->getPropertyValues(new core_kernel_classes_Property(TEST_TESTCONTENT_PROP));
+        
         if (count($props) > 1) {
-            throw new \common_Exception();
+            throw new common_Exception();
         }
         
         if (count($props) == 1) {
@@ -64,6 +90,7 @@ class TestContent
             $content = $class->createInstance();
             $test->setPropertyValue(new core_kernel_classes_Property(TEST_TESTCONTENT_PROP), $content);
         }
+        
         return $content;
     }
 }
