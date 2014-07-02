@@ -34,4 +34,5 @@ use oat\irtTest\model\TestContent;
  */
 class Authoring extends tao_actions_CommonModule
 {
+    
 }
