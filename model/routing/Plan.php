@@ -21,6 +21,7 @@
 namespace oat\irtTest\model\routing;
 
 use oat\oatbox\PhpSerializable;
+use tao_models_classes_service_ServiceCall;
 
 /**
  * A Plan describes how a IRT Test will take place. An implementation
@@ -62,5 +63,10 @@ interface Plan extends PhpSerializable
      */
     public function persistRoute(Route $route);
     
+    /**
+     * Restore the ServiceCall object bound to a given $itemIdentifier.
+     * 
+     * @return tao_models_classes_service_ServiceCall
+     */
     public function restoreItemRunner($itemIdentifier);
 }
