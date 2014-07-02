@@ -48,7 +48,19 @@ class TestAssembler extends taoTests_models_classes_TestCompiler
      * 
      * @var string
      */
-    const ASSEMBLY_FILENAME = 'data.php'; 
+    const ASSEMBLY_FILENAME = 'data.php';
+    
+    /**
+     * A file name pattern (name + extension) for files aiming at containing
+     * a serialized Item Runner ServiceCall representation. The 'X' character
+     * in the constant will be replaced by a unique identifier corresponding
+     * to the item to be called by the ServiceCall.
+     * 
+     * The extension name is .ird, meaning Item Runner Data.
+     * 
+     * @var string
+     */
+    const ASSEMBLY_ITEMRUNNERS_FILENAME = 'X.ird';
     
     /**
      * Compile the IRT Test definition itself and all the related items. The IRT Test definition
@@ -70,10 +82,12 @@ class TestAssembler extends taoTests_models_classes_TestCompiler
         $testModel = $testService->getTestModelImplementation($testService->getTestModel($this->getResource()));
         
         $report = new common_report_Report(common_report_Report::TYPE_SUCCESS);
+        
+        // Instantiate the private directory data.
+        $private = $this->spawnPrivateDirectory();
 
-        //prepare the items
+        // Prepare the Item ServiceCalls.
         $items = $testModel->getItems($this->getResource());
-        $itemRunners = array();
         
         foreach ($items as $item) {
             
@@ -86,18 +100,21 @@ class TestAssembler extends taoTests_models_classes_TestCompiler
                 $report->setType($subReport->getType());
                 break;
             } else {
-                $itemRunners[$item->getUri()] = $subReport->getData()->serializeToString();
+                // Serialize the Item Runner ServiceCalls to a separate file. In this way
+                // Item Runner ServiceCalls can be exploited in an atomic way.
+                $mappedItemIdentifier = $testModel->getItemIdentifierMapper()->map($item);
+                $fileName = $private->getPath() . str_replace('X', urlencode($mappedItemIdentifier), self::ASSEMBLY_ITEMRUNNERS_FILENAME);
+                file_put_contents($fileName, $subReport->getData()->serializeToString());
             }
         }
         
-        // prepare the metadata
+        // Prepare the compiled information about how the test has to be delivered.
         $plan = $testModel->createRoutingPlan($items, $this->getStorage());
         
-        $private = $this->spawnPrivateDirectory();
-        $fileName = $private->getPath().self::ASSEMBLY_FILENAME;
+        
+        $fileName = $private->getPath() . self::ASSEMBLY_FILENAME;
         
         file_put_contents($fileName, '<?php return ' . common_Utils::toPHPVariableString(array(
-            'itemRunners' => $itemRunners,
             'routingPlan' => $plan
         )) . ';');
         

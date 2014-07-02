@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
@@ -18,30 +18,25 @@
  *
  */
 
-namespace oat\irtTest\model\routing;
+namespace oat\irtTest\model\mapping;
+
+use core_kernel_classes_Resource;
 
 /**
- * Contains the logic of obtaining the next item to be presented to the candidate, by respecting
- * a given Plan. It also declares its state through the getStateString() method.
- *
- * @author Joel Bout <joel@taotesting.com>
+ * An ItemIdentifierMapper provides the logic aiming at mapping
+ * items to specific identifiers.
+ * 
  * @author Jérôme Bogaerts <jerome@taotesting.com>
- * @see Plan The Plan interface.
+ *
  */
-interface Route
+interface ItemIdentifierMapper
 {
     /**
-     * Return the next item of the Route, or an empty string if the test is finished.
+     * Map a given $item Generis Resource to a specific
+     * identifier. Implementations are responsible of the uniqueness
+     * of the returned identifiers.
      * 
-     * @param string $lastItemScore The score the candidate was granted against the last item he took. This parameter is optional if the candidate never took an item in this test before.
-     * @return string $itemIdentifier The unique identifier of the next item to be delivered to the candidate.
+     * @param core_kernel_classes_Resource $item The item you want to get a specific identifier.
      */
-    public function getNextItem($lastItemScore = '');
-    
-    /**
-     * Return the serialized state of the Route, as a string.
-     *
-     * @return string
-     */
-    public function getStateString();
+    public function map(core_kernel_classes_Resource $item);
 }

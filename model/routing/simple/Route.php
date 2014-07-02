@@ -24,8 +24,9 @@ use oat\irtTest\model\routing\Route as RouteInterface;
 use oat\irtTest\model\routing\Plan;
 
 /**
- * Contains the logic of obtaining the next item to be presented to the candidate, by respecting 
- * a given Plan. It also declares its state through the getStateString() method.
+ * Implementations of this class will contain the logic of obtaining the next item to be 
+ * presented to the candidate, with respect to a given Plan. It also declares its state through 
+ * the getStateString() method.
  * 
  * @author Joel Bout <joel@taotesting.com>
  * @author Jérôme Bogaerts <jerome@taotesting.com>
@@ -58,14 +59,5 @@ abstract class Route implements RouteInterface {
      */
     protected function setPlan(Plan $plan) {
         $this->plan = $plan;
-    }
-    
-    /**
-     * Return the next item of the Route, or an empty string if the test is finished.
-     * 
-     * @param string $lastItemScore The score the candidate was granted against the last item he took. This parameter is optional if the candidate never took an item in this test before.
-     * @return string $itemIdentifier The unique identifier of the next item to be delivered to the candidate.
-     */
-    abstract public function getNextItem($lastItemScore = '');
-    
+    }    
 }

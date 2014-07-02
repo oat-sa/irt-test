@@ -61,4 +61,6 @@ interface Plan extends PhpSerializable
      * @return string
      */
     public function persistRoute(Route $route);
+    
+    public function restoreItemRunner($itemIdentifier);
 }

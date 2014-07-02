@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
@@ -18,30 +18,30 @@
  *
  */
 
-namespace oat\irtTest\model\routing;
+namespace oat\irtTest\model\mapping\simple;
+
+use core_kernel_classes_Resource;
+use oat\irtTest\model\mapping\ItemIdentifierMapper as ItemIdentifierMapperInterface;
 
 /**
- * Contains the logic of obtaining the next item to be presented to the candidate, by respecting
- * a given Plan. It also declares its state through the getStateString() method.
- *
- * @author Joel Bout <joel@taotesting.com>
+ * A simple implementation of the ItemIdentifierMapper interface, based on
+ * Item URIs.
+ * 
  * @author Jérôme Bogaerts <jerome@taotesting.com>
- * @see Plan The Plan interface.
+ * @see http://en.wikipedia.org/wiki/Uniform_Resource_Identifier Information about URIs.
+ *
  */
-interface Route
+class ItemIdentifierMapper implements ItemIdentifierMapperInterface
 {
     /**
-     * Return the next item of the Route, or an empty string if the test is finished.
+     * Returns the URI of the given $item as its unique identifier.
      * 
-     * @param string $lastItemScore The score the candidate was granted against the last item he took. This parameter is optional if the candidate never took an item in this test before.
-     * @return string $itemIdentifier The unique identifier of the next item to be delivered to the candidate.
+     * @param string $identifier 
+     * @return string A URI.
+     * @see http://en.wikipedia.org/wiki/Uniform_Resource_Identifier Information about URIs.
      */
-    public function getNextItem($lastItemScore = '');
-    
-    /**
-     * Return the serialized state of the Route, as a string.
-     *
-     * @return string
-     */
-    public function getStateString();
+    public function map(core_kernel_classes_Resource $item)
+    {
+        return $item->getUri();
+    }
 }
