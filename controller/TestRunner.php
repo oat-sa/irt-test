@@ -152,7 +152,9 @@ class TestRunner extends tao_actions_ServiceModule
         
         $this->updateState();
         
-        // @todo render item
+        // @todo render item.
+        // @todo get item service call.
+        // @todo transfer item service call to view
     }
     
     /**
@@ -177,10 +179,14 @@ class TestRunner extends tao_actions_ServiceModule
         
         if (empty($itemUri)) {
             // @todo end test
+            // @todo transfer finish event to view for a later call to serviceApi.finish()
         } else {
             $state['current'] = $itemUri;
             $this->updateState();
-            // @todo give test info required to render item
+            
+            // @todo render item.
+            // @todo get item service call.
+            // @todo transfer item service call to view
         }
     }
 }
