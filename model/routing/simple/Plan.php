@@ -76,7 +76,7 @@ abstract class Plan implements PlanInterface
      * 
      * @return tao_models_classes_service_ServiceCall
      */
-    public function restoreItemRunner($itemIdentifier) 
+    public function getItemRunner($itemIdentifier)
     {
         $fileName = str_replace('X', $itemIdentifier, TestAssembler::ASSEMBLY_ITEMRUNNERS_FILENAME);
         $strServiceCall = file_get_contents($this->getStoragePath() . $fileName);

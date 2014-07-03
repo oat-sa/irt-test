@@ -155,6 +155,7 @@ class TestRunner extends tao_actions_ServiceModule
         // @todo render item.
         // @todo get item service call.
         // @todo transfer item service call to view
+        $serviceCall = $this->getRoutingPlan()->getItemRunner($itemUri);
     }
     
     /**
@@ -187,6 +188,7 @@ class TestRunner extends tao_actions_ServiceModule
             // @todo render item.
             // @todo get item service call.
             // @todo transfer item service call to view
+            $serviceCall = $this->getRoutingPlan()->getItemRunner($itemUri);
         }
     }
 }
