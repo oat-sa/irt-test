@@ -25,11 +25,11 @@ use common_report_Report;
 use taoTests_models_classes_TestsService;
 use taoTests_models_classes_TestModel;
 use common_ext_ExtensionsManager;
+use common_ext_Extension;
 use core_kernel_classes_Resource;
 use tao_helpers_form_GenerisTreeForm;
 use core_kernel_classes_Class;
 use core_kernel_classes_Property;
-use tao_models_classes_service_FileStorage;
 use oat\irtTest\model\routing\Plan;
 use oat\irtTest\model\mapping\ItemIdentifierMapper;
 use tao_models_classes_service_FileStorage;
@@ -53,19 +53,11 @@ abstract class TestModel implements taoTests_models_classes_TestModel
     private $ext;
     
     /**
-     * The ItemIdentifierMapper object in use for this TestModel implementation.
-     * 
-     * @var ItemIdentifierMapper
-     */
-    private $itemIdentifierMapper;
-    
-    /**
      * Create a new TestModel object dedicated to IRT Tests.
      */
     public function __construct() 
     {
         $this->setExtension(common_ext_ExtensionsManager::singleton()->getExtensionById('irtTest'));
-        $this->setItemIdentifierMapper($this->createItemIdentifierMapper());
     }
     
     protected function setExtension(common_ext_Extension $extension)
@@ -76,15 +68,6 @@ abstract class TestModel implements taoTests_models_classes_TestModel
     protected function getExtension()
     {
         return $this->ext;
-    }
-    
-    protected function setItemIdentifierMapper(ItemIdentifierMapper $itemIdentifierMapper)
-    {
-        $this->itemIdentifierMapper = $itemIdentifierMapper;
-    }
-    
-    public function getItemIdentifierMapper() {
-        return $this->itemIdentifierMapper;
     }
     
     /**
@@ -175,12 +158,4 @@ abstract class TestModel implements taoTests_models_classes_TestModel
      * @return Plan
      */
     abstract public function createRoutingPlan(array $items, tao_models_classes_service_FileStorage $storage);
-    
-    /**
-     * A Factory Method which delegates the creation of an appropriate ItemIdentifierMapper
-     * object to sub-classes.
-     * 
-     * @return ItemIdentifierMapper
-     */
-    abstract protected function createItemIdentifierMapper();
 }

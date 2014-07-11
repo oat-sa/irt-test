@@ -21,9 +21,11 @@
 namespace oat\irtTest\controller;
 
 use tao_actions_ServiceModule;
+use taoResultServer_models_classes_ResultServerStateFull;
 use oat\irtTest\model\TestAssembler;
 use oat\irtTest\model\routing\Plan;
 use oat\irtTest\model\routing\Route;
+use oat\irtTest\helpers\TestContext;
 
 /**
  * The TestRunner is the controller dedicated to deliver an IRT Test
@@ -108,6 +110,16 @@ class TestRunner extends tao_actions_ServiceModule
         return $this->route;
     }
     
+    protected function getLastScore()
+    {
+        $state = $this->getCachedState();
+        $testServiceCallId = $this->getServiceCallId();
+        $itemId = $state['current'];
+        $resultServer = taoResultServer_models_classes_ResultServerStateFull::singleton();
+        $var = $resultServer->getVariable("${testServiceCallId}.${itemId}", 'SCORE');
+        return $var[0]->variable->getValue();
+    }
+    
     /**
      * Get a reference on the array representing the state of the test.
      * 
@@ -117,6 +129,10 @@ class TestRunner extends tao_actions_ServiceModule
     {
         if (is_null($this->state)) {
             $this->state = json_decode($this->getState(), true);
+            
+            if ($this->state === null) {
+                $this->state = array();
+            }
         }
         return $this->state;
     }
@@ -137,25 +153,31 @@ class TestRunner extends tao_actions_ServiceModule
      */
     public function index()
     {
-        $state = $this->getCachedState();
+        $state = &$this->getCachedState();
         
         if (isset($state['current'])) {
             // We have a current item (candidate pressed F5 or comes back on
             // the test after a break).
-            $itemUri = $state['current'];
+            $itemId = $state['current'];
         } else {
             // No current item, let's retrieve the very first item
             // of the route.
-            $itemUri = $this->getRoute()->getNextItem(null);
-            $state['current'] = $itemUri;
-        } 
-        
+            $itemId = $this->getRoute()->getNextItem(null);
+            \common_Logger::i('ITEM TO BE DISPLAYED ' . $itemId);
+            $state['current'] = $itemId;
+        }
+
         $this->updateState();
         
-        // @todo render item.
-        // @todo get item service call.
-        // @todo transfer item service call to view
-        $serviceCall = $this->getRoutingPlan()->getItemRunner($itemUri);
+        // Gather data useful to build the view.
+        $testServiceCallId = $this->getServiceCallId();
+        $testDefinitionUri = $this->getRequestParameter('Test');
+        $testCompilationUri = $this->getRequestParameter('Compilation');
+
+        // Transmit data to view.
+        $this->setData('client_config_url', $this->getClientConfigUrl());
+        $this->setData('test_context', TestContext::buildContext($this->getRoutingPlan(), $itemId, $testServiceCallId, $testDefinitionUri, $testCompilationUri));
+        $this->setView('test_runner.tpl', 'irtTest');
     }
     
     /**
@@ -166,29 +188,18 @@ class TestRunner extends tao_actions_ServiceModule
      */
     public function next()
     {
-        $state = $this->getCachedState();
+        $state = &$this->getCachedState();
+        $lastScore = $this->getLastScore();
         
-        // ajax call
-        // parameters? testServiceCallId, testdefinition, lastItemServiceCallId
-        // lastItemServiceCallId could be derived from current item :)
+        $itemId = $this->getRoute()->getNextItem($lastScore);
+        $state['current'] = $itemId;
+        $this->updateState();
         
-        // @todo get last score
-        $lastScore = 0;
+        $testServiceCallId = $this->getServiceCallId();
+        $testDefinitionUri = $this->getRequestParameter('Test');
+        $testCompilationUri = $this->getRequestParameter('Compilation');
         
-        // get routing Engine
-        $itemUri = $this->getRoute()->getNextItem($lastScore);
-        
-        if (empty($itemUri)) {
-            // @todo end test
-            // @todo transfer finish event to view for a later call to serviceApi.finish()
-        } else {
-            $state['current'] = $itemUri;
-            $this->updateState();
-            
-            // @todo render item.
-            // @todo get item service call.
-            // @todo transfer item service call to view
-            $serviceCall = $this->getRoutingPlan()->getItemRunner($itemUri);
-        }
+        $testContext = TestContext::buildContext($this->getRoutingPlan(), $itemId, $testServiceCallId, $testDefinitionUri, $testCompilationUri);
+        echo json_encode($testContext, JSON_HEX_QUOT | JSON_HEX_APOS);
     }
 }

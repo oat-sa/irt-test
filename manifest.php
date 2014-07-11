@@ -29,11 +29,12 @@ return array(
     'version' => '1.0.0',
 	'author' => 'Open Assessment Technologies',
 	'requires' => array(
-	    'taoTests' => '2.6'
+	    'taoTests' => '>=2.6',
+	    'taoAltResultStorage' => '>=1.0'
 	),
 	'install' => array(
 		'rdf' => array(
-		    dirname(__FILE__).DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'ontology'.DIRECTORY_SEPARATOR.'testModel.rdf'
+		    dirname(__FILE__).DIRECTORY_SEPARATOR . 'install' . DIRECTORY_SEPARATOR . 'ontology' . DIRECTORY_SEPARATOR . 'testModel.rdf'
 		),
 		'checks' => array(
 		),
@@ -53,5 +54,8 @@ return array(
         array('grant', 'http://www.tao.lu/Ontologies/TAOTest.rdf#TestsManagerRole', array('ext'=>'irtTest', 'mod' => 'Authoring'))
     ),    
 	'constants' => array(
+	    'DIR_VIEWS' => $extpath . 'views' . DIRECTORY_SEPARATOR,
+	    'BASE_URL' => ROOT_URL	. 'irtTest/',
+	    'BASE_WWW' => ROOT_URL	. 'irtTest/views/',
 	)
 );

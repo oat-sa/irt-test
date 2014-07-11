@@ -1,4 +1,3 @@
-<?php
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -15,28 +14,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * Copyright (c) 2014 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
- *
- */
-
-namespace oat\irtTest\model\mapping;
-
-use core_kernel_classes_Resource;
-
-/**
- * An ItemIdentifierMapper provides the logic aiming at mapping
- * items to specific identifiers.
  * 
- * @author Jérôme Bogaerts <jerome@taotesting.com>
- *
+ * 
  */
-interface ItemIdentifierMapper
-{
-    /**
-     * Map a given $item Generis Resource to a specific
-     * identifier. Implementations are responsible of the uniqueness
-     * of the returned identifiers.
-     * 
-     * @param core_kernel_classes_Resource $item The item you want to get a specific identifier.
-     */
-    public function map(core_kernel_classes_Resource $item);
-}
+
+//@see http://forge.taotesting.com/projects/tao/wiki/Front_js
+define(function(){
+    'use strict';
+
+    return {
+    };
+});

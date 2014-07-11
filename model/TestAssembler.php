@@ -23,6 +23,7 @@ namespace oat\irtTest\model;
 use taoTests_models_classes_TestCompiler;
 use common_report_Report;
 use common_Utils;
+use common_Logger;
 use core_kernel_classes_Resource;
 use tao_models_classes_service_ServiceCall;
 use tao_models_classes_service_ConstantParameter;
@@ -49,19 +50,7 @@ class TestAssembler extends taoTests_models_classes_TestCompiler
      * @var string
      */
     const ASSEMBLY_FILENAME = 'data.php';
-    
-    /**
-     * A file name pattern (name + extension) for files aiming at containing
-     * a serialized Item Runner ServiceCall representation. The 'X' character
-     * in the constant will be replaced by a unique identifier corresponding
-     * to the item to be called by the ServiceCall.
-     * 
-     * The extension name is .ird, meaning Item Runner Data.
-     * 
-     * @var string
-     */
-    const ASSEMBLY_ITEMRUNNERS_FILENAME = 'X.ird';
-    
+
     /**
      * Compile the IRT Test definition itself and all the related items. The IRT Test definition
      * will be stored in the TestAssembler's private storage directory, with the name
@@ -88,6 +77,7 @@ class TestAssembler extends taoTests_models_classes_TestCompiler
 
         // Prepare the Item ServiceCalls.
         $items = $testModel->getItems($this->getResource());
+        $itemServiceCalls = array();
         
         foreach ($items as $item) {
             
@@ -100,24 +90,17 @@ class TestAssembler extends taoTests_models_classes_TestCompiler
                 $report->setType($subReport->getType());
                 break;
             } else {
-                // Serialize the Item Runner ServiceCalls to a separate file. In this way
-                // Item Runner ServiceCalls can be exploited in an atomic way.
-                $mappedItemIdentifier = $testModel->getItemIdentifierMapper()->map($item);
-                $fileName = $private->getPath() . str_replace('X', urlencode($mappedItemIdentifier), self::ASSEMBLY_ITEMRUNNERS_FILENAME);
-                file_put_contents($fileName, $subReport->getData()->serializeToString());
+                $itemServiceCalls[] = array('item' => $item, 'call' => $subReport->getData());
             }
         }
         
         // Prepare the compiled information about how the test has to be delivered.
-        $plan = $testModel->createRoutingPlan($items, $this->getStorage());
-        
-        
+        $plan = $testModel->createRoutingPlan($itemServiceCalls, $this->getStorage());
         $fileName = $private->getPath() . self::ASSEMBLY_FILENAME;
         
         file_put_contents($fileName, '<?php return ' . common_Utils::toPHPVariableString(array(
             'routingPlan' => $plan
         )) . ';');
-        
         
          // get Decision engine
          // tell decision engine to prepare meta-data
@@ -132,6 +115,7 @@ class TestAssembler extends taoTests_models_classes_TestCompiler
                  new core_kernel_classes_Resource(INSTANCE_FORMALPARAM_IRTTEST_DEFINITION),
                  $this->getResource()->getUri()
              );
+             $service->addInParameter($param);
              
              // Compilation folder where the assembly is stored.
              $param = new tao_models_classes_service_ConstantParameter(

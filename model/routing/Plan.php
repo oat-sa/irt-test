@@ -69,4 +69,11 @@ interface Plan extends PhpSerializable
      * @return tao_models_classes_service_ServiceCall
      */
     public function restoreItemRunner($itemIdentifier);
+    
+    /**
+     * Get the number of items in the item pool.
+     * 
+     * @return int
+     */
+    public function getItemCount();
 }
