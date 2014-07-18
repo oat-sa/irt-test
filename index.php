@@ -18,7 +18,7 @@
  *               
  * 
  */
-require_once '/home/jerome/tao-dev/taotrunkCTB/tao/includes/class.Bootstrap.php';
+require_once dirname(__FILE__) . '/../tao/includes/class.Bootstrap.php';
 
 $bootStrap = new BootStrap('irtTest');
 $bootStrap->start();
