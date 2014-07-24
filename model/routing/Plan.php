@@ -34,7 +34,7 @@ use tao_models_classes_service_ServiceCall;
  * 
  * @author Joel Bout <joel@taotesting.com>
  * @author Jérôme Bogaerts <jerome@taotesting.com>
- * @see Route The Route abstract class.
+ * @see \oat\irtTest\model\Route The Route interface.
  */
 interface Plan extends PhpSerializable 
 {
@@ -44,6 +44,7 @@ interface Plan extends PhpSerializable
      * to the Plan.
      * 
      * @return Route
+     * @throws \oat\irtTest\model\PlanException If something goes wrong.
      */
     public function instantiateRoute();
     
@@ -51,7 +52,8 @@ interface Plan extends PhpSerializable
      * Restore a Route object from a string representation of its state.
      * 
      * @param string $stateString The string defining the intrinsic state of the Route object to be restored.
-     * @return Route
+     * @return \oat\irtTest\model\Route
+     * @throws \oat\irtTest\model\PlanException If something goes wrong.
      */
     public function restoreRoute($stateString);
     
@@ -60,6 +62,7 @@ interface Plan extends PhpSerializable
      * 
      * @param Route $route
      * @return string
+     * @throws \oat\irtTest\model\PlanException If something goes wrong.
      */
     public function persistRoute(Route $route);
     
@@ -67,6 +70,7 @@ interface Plan extends PhpSerializable
      * Restore the ServiceCall object bound to a given $itemIdentifier.
      * 
      * @return tao_models_classes_service_ServiceCall
+     * @throws \oat\irtTest\model\PlanException If something goes wrong.
      */
     public function restoreItemRunner($itemIdentifier);
     
@@ -74,6 +78,7 @@ interface Plan extends PhpSerializable
      * Get the number of items in the item pool.
      * 
      * @return int
+     * @throws \oat\irtTest\model\PlanException If something goes wrong.
      */
     public function getItemCount();
 }

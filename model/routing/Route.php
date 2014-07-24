@@ -35,6 +35,7 @@ interface Route
      * 
      * @param string $lastItemScore The score the candidate was granted against the last item he took. This parameter is optional if the candidate never took an item in this test before.
      * @return string $itemIdentifier The unique identifier of the next item to be delivered to the candidate.
+     * @throws \oat\irtTest\model\RouteException If something goes wrong.
      */
     public function getNextItem($lastItemScore = '');
     
@@ -42,6 +43,7 @@ interface Route
      * Return the serialized state of the Route, as a string.
      *
      * @return string
+     * @throws \oat\irtTest\model\RouteException If something goes wrong.
      */
     public function getStateString();
 }
