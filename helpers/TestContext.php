@@ -44,7 +44,7 @@ class TestContext
     /**
      * Build the Test Context as an associative array, suitable for a later json_encode().
      * 
-     * @param Plan $plan The Plan to be respected by the Test.
+     * @param \oat\irtTest\model\routing\Plan $plan The Plan to be respected by the Test.
      * @param string $itemId The unique identifier of the Item to be taken by the candidate. 
      * @param string $testServiceCallId The unique identifier of the Item Service Call.
      * @param string $testDefinitionUri The Uniform Resource Identifier (URI) of the Test Definition.

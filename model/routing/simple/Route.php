@@ -25,8 +25,7 @@ use oat\irtTest\model\routing\Plan;
 
 /**
  * Implementations of this class will contain the logic of obtaining the next item to be 
- * presented to the candidate, with respect to a given Plan. It also declares its state through 
- * the getStateString() method.
+ * presented to the candidate, with respect to a given Plan.
  * 
  * @author Joel Bout <joel@taotesting.com>
  * @author Jérôme Bogaerts <jerome@taotesting.com>

@@ -20,6 +20,7 @@
 
 namespace oat\irtTest\controller;
 
+use common_session_SessionManager;
 use tao_actions_ServiceModule;
 use taoResultServer_models_classes_ResultServerStateFull;
 use oat\irtTest\model\TestAssembler;
@@ -59,13 +60,16 @@ class TestRunner extends tao_actions_ServiceModule
     /**
      * The Route object providing the items to be taken by the candidate.
      * 
-     * @var Route
+     * @var \oat\irtTest\model\routing\Route
      */
     private $route = null;
     
     /**
      * Get the PHP associative array representing the IRT Test assembly. This assembly
      * is retrieved from the test's private storage directory.
+     * 
+     * At the moment, the returned array contains a single key 'routingPlan', which contains
+     * a reference on the Plan object to be used to rule the test session.
      * 
      * @return array
      */
@@ -76,13 +80,14 @@ class TestRunner extends tao_actions_ServiceModule
             $fileName = $this->getDirectory($compiledTest)->getPath() . TestAssembler::ASSEMBLY_FILENAME;
             $this->assembly = include $fileName;
         }
+        
         return $this->assembly;
     }
     
     /**
      * Get the Plan object describing the test plan to be taken.
      * 
-     * @return Plan
+     * @return \oat\irtTest\model\routing\Plan
      */
     protected function getRoutingPlan()
     {
@@ -94,7 +99,7 @@ class TestRunner extends tao_actions_ServiceModule
      * Get the Route object providing the next items to be taken by the candidate,
      * with respect to the Plan.
      * 
-     * @return Route
+     * @return \oat\irtTest\model\routing\Route
      */
     protected function getRoute()
     {
@@ -110,6 +115,11 @@ class TestRunner extends tao_actions_ServiceModule
         return $this->route;
     }
     
+    /**
+     * Get the score to the last item taken by the candidate.
+     * 
+     * @return string
+     */
     protected function getLastScore()
     {
         $state = $this->getCachedState();
@@ -117,11 +127,34 @@ class TestRunner extends tao_actions_ServiceModule
         $itemId = $state['current'];
         $resultServer = taoResultServer_models_classes_ResultServerStateFull::singleton();
         $var = $resultServer->getVariable("${testServiceCallId}.${itemId}", 'SCORE');
+        
+        return $var[0]->variable->getValue();
+    }
+    
+    /**
+     * Get the response to the last item taken by the candidate.
+     * 
+     * @return string
+     */
+    protected function getLastResponse()
+    {
+        $state = $this->getCachedState();
+        $testServiceCallId = $this->getServiceCallId();
+        $itemId = $state['current'];
+        $resultServer = taoResultServer_models_classes_ResultServerStateFull::singleton();
+        $var = $resultServer->getVariable("${testServiceCallId}.${itemId}", 'RESPONSE');
+        
         return $var[0]->variable->getValue();
     }
     
     /**
      * Get a reference on the array representing the state of the test.
+     * 
+     * The returned array contains the following keys:
+     * 
+     * * 'current' : The identifier of the current item (not set if no item already taken).
+     * * 'candidateId' : The identifier of the candidate.
+     * * 'sessionId' : The identifier of the test session. 
      * 
      * @return array
      */
@@ -162,8 +195,11 @@ class TestRunner extends tao_actions_ServiceModule
         } else {
             // No current item, let's retrieve the very first item
             // of the route.
-            $itemId = $this->getRoute()->getNextItem(null);
-            \common_Logger::i('ITEM TO BE DISPLAYED ' . $itemId);
+            $session = common_session_SessionManager::getSession();
+            $state['candidateId'] = $session->getUserUri();
+            $state['sessionId'] = $this->getServiceCallId();
+            
+            $itemId = $this->getRoute()->getNextItem($state['sessionId'], $state['candidateId']);
             $state['current'] = $itemId;
         }
 
@@ -176,7 +212,15 @@ class TestRunner extends tao_actions_ServiceModule
 
         // Transmit data to view.
         $this->setData('client_config_url', $this->getClientConfigUrl());
-        $this->setData('test_context', TestContext::buildContext($this->getRoutingPlan(), $itemId, $testServiceCallId, $testDefinitionUri, $testCompilationUri));
+        
+        $this->setData('test_context', TestContext::buildContext(
+            $this->getRoutingPlan(),
+            $itemId,
+            $testServiceCallId,
+            $testDefinitionUri,
+            $testCompilationUri)
+        );
+        
         $this->setView('test_runner.tpl', 'irtTest');
     }
     
@@ -189,9 +233,20 @@ class TestRunner extends tao_actions_ServiceModule
     public function next()
     {
         $state = &$this->getCachedState();
-        $lastScore = $this->getLastScore();
         
-        $itemId = $this->getRoute()->getNextItem($lastScore);
+        $sessionId = $this->getServiceCallId();
+        $lastScore = $this->getLastScore();
+        $lastResponse = $this->getLastResponse();
+        $lastId = $state['current'];
+        
+        $itemId = $this->getRoute()->getNextItem(
+            $state['sessionId'],
+            $state['candidateId'],
+            $lastId,
+            $lastResponse,
+            $lastScore
+        );
+        
         $state['current'] = $itemId;
         $this->updateState();
         
@@ -199,7 +254,15 @@ class TestRunner extends tao_actions_ServiceModule
         $testDefinitionUri = $this->getRequestParameter('Test');
         $testCompilationUri = $this->getRequestParameter('Compilation');
         
-        $testContext = TestContext::buildContext($this->getRoutingPlan(), $itemId, $testServiceCallId, $testDefinitionUri, $testCompilationUri);
+        $testContext = TestContext::buildContext(
+            $this->getRoutingPlan(),
+            $itemId,
+            $testServiceCallId,
+            $testDefinitionUri,
+            $testCompilationUri
+        );
+        
+        header('Content-type: application/json; charset=utf-8');
         echo json_encode($testContext, JSON_HEX_QUOT | JSON_HEX_APOS);
     }
 }
